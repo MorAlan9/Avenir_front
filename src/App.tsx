@@ -14,14 +14,14 @@ import { GestionAtsComponent } from "./components/ats/GestionAtsComponent";
 
 import GestorPermisosUsuarios from "./components/gestorUsuarios/GestorPermisosUsuarios";
 
-import LandingPageComponent from "./components/landing/LandingPageComponent";
+const LandingPageComponent = React.lazy(() => import("./components/landing/LandingPageComponent"));
 
 const App: React.FC = () => {
   return (
     <Router>
       <Routes>
         {}
-        <Route path="/" element={<LandingPageComponent />} />
+        <Route path="/" element={<React.Suspense fallback={<div style={{ minHeight: "100vh", background: "#06241A" }} />}><LandingPageComponent /></React.Suspense>} />
 
         {}
         <Route path="/login" element={<LoginComponent />} />
