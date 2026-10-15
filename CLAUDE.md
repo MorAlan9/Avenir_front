@@ -12,3 +12,6 @@
 ## Este repo
 
 Frontend (React + TS + Vite) de **Avenir**. Repo público: no incluir datos comerciales ni URLs internas.
+
+- **Despertar al backend:** `src/main.tsx` hace un `fetch` a `{API}/ping` apenas carga la web (el backend gratuito se duerme por inactividad), así el arranque ocurre mientras la persona escribe su usuario.
+- **Nada de claves en el código:** este repo es público y todo el JS llega al navegador. La clave maestra de administrador **no** va acá: el alta de administradores con clave la escribe una persona en la pantalla de registro, y el alta de usuarios por parte del personal usa `POST /usuarios/gestion` (autenticado, con permiso), sin clave. La pantalla de registro decide si fue alta de admin por lo que responde el backend (`rol`), no comparando la clave.

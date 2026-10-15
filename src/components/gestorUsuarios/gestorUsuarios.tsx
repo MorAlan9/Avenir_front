@@ -155,7 +155,6 @@ const GestorUsuarios: React.FC<Props> = ({ onIrAlMapa }) => {
                 alert("¡Usuario y dirección actualizados con éxito!");
             } else {
                 const payloadCreate = {
-                    claveAcceso: "000010001",
                     usuario: {
                         nombre,
                         apellido,
@@ -175,7 +174,7 @@ const GestorUsuarios: React.FC<Props> = ({ onIrAlMapa }) => {
                     }
                 };
 
-                await api.post("/usuarios", payloadCreate);
+                await api.post("/usuarios/gestion", payloadCreate);
             }
 
             limpiarFormulario();
