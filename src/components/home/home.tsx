@@ -36,6 +36,7 @@ import {
   Camera
 } from "lucide-react";
 import api from "../../service/api";
+import { obtenerPendientes, limpiarSesionConservandoPendientes } from "../../service/offlineQueue";
 import logoAvenir from "../../assets/avenir-logo.png";
 import GestorUsuarios from "../gestorUsuarios/gestorUsuarios";
 import GestorRoles from "../gestorRoles/gestorRoles";
@@ -248,7 +249,14 @@ const Home: React.FC = () => {
     };
 
     const handleCerrarSesion = () => {
-        localStorage.clear();
+        const sinEnviar = obtenerPendientes().length;
+        if (sinEnviar > 0 && !window.confirm(
+            `Tenés ${sinEnviar} fichaje${sinEnviar > 1 ? "s" : ""} sin enviar guardado${sinEnviar > 1 ? "s" : ""} en este dispositivo.\n\n` +
+            "Si salís ahora no se pierden: se envían solos la próxima vez que ingreses con tu usuario y haya conexión.\n\n¿Salir igual?"
+        )) {
+            return;
+        }
+        limpiarSesionConservandoPendientes();
         window.location.href = "/login";
     };
 

@@ -5,7 +5,8 @@ import { tienePermiso } from "../../service/authHelper";
 import "./asistencia.css";
 import type { RegistroAsistencia } from "../../interfaces/RegistroAsistencia";
 import type { Empresa } from "../../interfaces/Empresa";
-import { encolarFichaje, obtenerPendientes, quitarPendiente, esErrorDeRed, formatearFechaLocalISO } from "../../service/offlineQueue";
+import { encolarFichaje, obtenerPendientes, esErrorDeRed, formatearFechaLocalISO } from "../../service/offlineQueue";
+import { sincronizarFichajesPendientes } from "../../service/sincronizarFichajes";
 import { usePaginacion } from "../common/usePaginacion";
 import { Paginador } from "../common/Paginador";
 import { obtenerUbicacionValidada } from "../../service/geolocalizacion";
@@ -64,19 +65,9 @@ const RegistroAsistenciaComponent: React.FC = () => {
     }, []);
 
     const sincronizarPendientes = useCallback(async () => {
-        const cola = obtenerPendientes();
-        if (cola.length === 0) return;
+        if (obtenerPendientes().length === 0) return;
         setSincronizando(true);
-        for (const item of cola) {
-            try {
-                const endpoint = item.tipo === "ingreso" ? "/asistencia/ingreso" : "/asistencia/egreso";
-                await api.post(endpoint, item.payload, obtenerHeaders());
-                quitarPendiente(item.id);
-            } catch (err) {
-
-                break;
-            }
-        }
+        await sincronizarFichajesPendientes();
         setPendientes(obtenerPendientes().length);
         setSincronizando(false);
         await consultarEstado();

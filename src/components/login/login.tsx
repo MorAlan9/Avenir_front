@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import api from "../../service/api";
+import { limpiarSesionConservandoPendientes } from "../../service/offlineQueue";
 import { useNavigate } from "react-router-dom";
 import { LogIn, UserPlus, Eye, EyeOff, Hash, Type, Loader2 } from "lucide-react";
 import "./login.css";
@@ -39,7 +40,7 @@ const LoginComponent: React.FC = () => {
         }, 4000);
 
         try {
-            localStorage.clear();
+            limpiarSesionConservandoPendientes();
 
             const response = await api.post("/usuarios/login", loginData);
             clearTimeout(avisoServidorDormido);

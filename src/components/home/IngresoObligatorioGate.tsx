@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { LogIn, MapPin, RefreshCw, AlertTriangle } from "lucide-react";
 import api from "../../service/api";
 import { obtenerUbicacionValidada } from "../../service/geolocalizacion";
+import { sincronizarFichajesPendientes } from "../../service/sincronizarFichajes";
 
 interface Props {
     darkMode?: boolean;
@@ -26,7 +27,10 @@ const IngresoObligatorioGate: React.FC<Props> = ({ darkMode = false }) => {
     useEffect(() => {
         let activo = true;
 
-        api.get("/asistencia/estado", obtenerHeaders())
+        // Primero se envían los fichajes que quedaron guardados sin conexión: si no, el estado
+        // que devuelve el servidor no los tendría en cuenta y se pediría un ingreso de más.
+        sincronizarFichajesPendientes()
+            .then(() => api.get("/asistencia/estado", obtenerHeaders()))
             .then((res) => { if (activo) setNecesitaIngreso(!res.data); })
             .catch(() => { if (activo) setNecesitaIngreso(false); })
             .finally(() => { if (activo) setCargandoEstado(false); });

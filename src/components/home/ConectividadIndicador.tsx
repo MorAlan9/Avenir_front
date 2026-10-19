@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Wifi, WifiOff, RefreshCw } from "lucide-react";
 import { obtenerPendientes } from "../../service/offlineQueue";
+import { sincronizarFichajesPendientes } from "../../service/sincronizarFichajes";
 
 const ConectividadIndicador: React.FC = () => {
     const [enLinea, setEnLinea] = useState(navigator.onLine);
@@ -8,7 +9,12 @@ const ConectividadIndicador: React.FC = () => {
 
     useEffect(() => {
         const actualizarPendientes = () => setPendientes(obtenerPendientes().length);
-        const alConectar = () => { setEnLinea(true); actualizarPendientes(); };
+        // Al volver la señal se envían los fichajes guardados, esté la persona en la pantalla que esté.
+        const alConectar = () => {
+            setEnLinea(true);
+            actualizarPendientes();
+            sincronizarFichajesPendientes().finally(actualizarPendientes);
+        };
         const alDesconectar = () => setEnLinea(false);
 
         window.addEventListener("online", alConectar);
