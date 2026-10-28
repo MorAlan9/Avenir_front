@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import LoginComponent from "./components/login/login";
 import Register from "./components/registrer/registrer";
@@ -20,6 +20,10 @@ const RankingEnVivo = React.lazy(() => import("./components/juego/RankingEnVivo"
 const Certificado = React.lazy(() => import("./components/juego/Certificado"));
 const cargandoJuego = <div style={{ minHeight: "100vh", background: "#06241A" }} />;
 
+// Las pantallas internas exigen sesión: sin token se vuelve al ingreso (hallazgo de la prueba de aceptación HU-03).
+const Privada: React.FC<{ children: React.ReactElement }> = ({ children }) =>
+  localStorage.getItem("token") ? children : <Navigate to="/login" replace />;
+
 const App: React.FC = () => {
   return (
     <Router>
@@ -30,20 +34,20 @@ const App: React.FC = () => {
         {}
         <Route path="/login" element={<LoginComponent />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={<Privada><Home /></Privada>} />
 
         {}
-        <Route path="/empresas" element={<EmpresaComponent />} />
-        <Route path="/horarios" element={<RegistroHorarioComponent />} />
+        <Route path="/empresas" element={<Privada><EmpresaComponent /></Privada>} />
+        <Route path="/horarios" element={<Privada><RegistroHorarioComponent /></Privada>} />
 
         {}
-        <Route path="/admin/catalogos" element={<AdminCatalogosPage darkMode={true} />} />
+        <Route path="/admin/catalogos" element={<Privada><AdminCatalogosPage darkMode={true} /></Privada>} />
 
         {}
-        <Route path="/ats" element={<GestionAtsComponent />} />
+        <Route path="/ats" element={<Privada><GestionAtsComponent /></Privada>} />
 
         {}
-        <Route path="/admin/permisos-usuario" element={<GestorPermisosUsuarios />} />
+        <Route path="/admin/permisos-usuario" element={<Privada><GestorPermisosUsuarios /></Privada>} />
 
         {}
         <Route path="/juego" element={<React.Suspense fallback={cargandoJuego}><JuegoInspector /></React.Suspense>} />
