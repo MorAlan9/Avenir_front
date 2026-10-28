@@ -15,6 +15,10 @@ import { GestionAtsComponent } from "./components/ats/GestionAtsComponent";
 import GestorPermisosUsuarios from "./components/gestorUsuarios/GestorPermisosUsuarios";
 
 const LandingPageComponent = React.lazy(() => import("./components/landing/LandingPageComponent"));
+const JuegoInspector = React.lazy(() => import("./components/juego/JuegoInspector"));
+const RankingEnVivo = React.lazy(() => import("./components/juego/RankingEnVivo"));
+const Certificado = React.lazy(() => import("./components/juego/Certificado"));
+const cargandoJuego = <div style={{ minHeight: "100vh", background: "#06241A" }} />;
 
 const App: React.FC = () => {
   return (
@@ -42,6 +46,10 @@ const App: React.FC = () => {
         <Route path="/admin/permisos-usuario" element={<GestorPermisosUsuarios />} />
 
         {}
+        <Route path="/juego" element={<React.Suspense fallback={cargandoJuego}><JuegoInspector /></React.Suspense>} />
+        <Route path="/juego/ranking" element={<React.Suspense fallback={cargandoJuego}><RankingEnVivo /></React.Suspense>} />
+        <Route path="/juego/certificado" element={<React.Suspense fallback={cargandoJuego}><Certificado /></React.Suspense>} />
+
         <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
       </Routes>
     </Router>
