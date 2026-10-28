@@ -23,3 +23,5 @@ Juego de quiosco, **sin servidor** (anda sin Internet): rutas `/juego` (partida)
 - 10 peligros escondidos (niveles IPER reales: Baja/Media/Alta/Crítica), 75 s, el jugador clasifica cada uno; 2 trampas (botiquín, cartel) = falsa alarma (−40 y 3 s bloqueado); 2 pistas (−50). Bonus por tiempo si encuentra todo (+150 sin falsas alarmas).
 - El ranking vive en `localStorage` (`avenir_juego_ranking_v1`) del navegador del stand y se avisa por `BroadcastChannel`/`storage`: **la tablet y la pantalla del ranking deben ser el mismo navegador/perfil y el mismo origen**. Doble clic en "reiniciar" (abajo a la derecha del ranking) lo borra.
 - Probado: partida completa (puntaje, informe, certificado en 1 hoja PDF), ranking, build y vista celular vertical con Chrome headless. **No** probado: tablet/celular real, sonido en dispositivo real, dos ventanas sincronizadas a ojo (la lógica es BroadcastChannel/storage).
+
+**Demo pública `/demo` (2026-10-28):** página del QR del folleto: acceso al juego + recorrido interactivo por 7 módulos con capturas reales de la demo local (`public/demo/*.jpg`, datos ficticios; no usa backend). Si cambian las pantallas, volver a sacar las capturas.

@@ -17,6 +17,7 @@ import GestorPermisosUsuarios from "./components/gestorUsuarios/GestorPermisosUs
 const LandingPageComponent = React.lazy(() => import("./components/landing/LandingPageComponent"));
 const JuegoInspector = React.lazy(() => import("./components/juego/JuegoInspector"));
 const RankingEnVivo = React.lazy(() => import("./components/juego/RankingEnVivo"));
+const DemoPublica = React.lazy(() => import("./components/juego/DemoPublica"));
 const Certificado = React.lazy(() => import("./components/juego/Certificado"));
 const cargandoJuego = <div style={{ minHeight: "100vh", background: "#06241A" }} />;
 
@@ -50,6 +51,7 @@ const App: React.FC = () => {
         <Route path="/admin/permisos-usuario" element={<Privada><GestorPermisosUsuarios /></Privada>} />
 
         {}
+        <Route path="/demo" element={<React.Suspense fallback={cargandoJuego}><DemoPublica /></React.Suspense>} />
         <Route path="/juego" element={<React.Suspense fallback={cargandoJuego}><JuegoInspector /></React.Suspense>} />
         <Route path="/juego/ranking" element={<React.Suspense fallback={cargandoJuego}><RankingEnVivo /></React.Suspense>} />
         <Route path="/juego/certificado" element={<React.Suspense fallback={cargandoJuego}><Certificado /></React.Suspense>} />

@@ -1,0 +1,26 @@
+.dm-root { overflow-y: auto; overflow-x: hidden; user-select: auto; -webkit-user-select: auto; }
+.dm-wrap { position: relative; z-index: 1; width: min(1100px, 100%); margin: 0 auto; padding: 22px 18px 40px; }
+.dm-cab { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.dm-link { color: var(--mint); font-weight: 700; text-decoration: none; display: inline-flex; gap: 6px; align-items: center; font-size: .95rem; }
+.dm-titulo { font-size: clamp(2rem, 6vw, 3.6rem); font-weight: 800; line-height: 1.05; letter-spacing: -.03em; margin: 26px 0 8px !important; }
+.dm-titulo em { font-size: 1.12em; }
+.dm-baj { color: rgba(255, 255, 255, .78); font-size: 1.05rem; }
+.dm-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 24px; }
+.dm-card { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; text-decoration: none; color: #fff; background: rgba(255, 255, 255, .07); border: 1px solid rgba(255, 255, 255, .18); border-radius: 22px; padding: 24px; transition: transform .15s ease, border-color .15s ease; }
+.dm-card:hover { transform: translateY(-3px); border-color: var(--mint); }
+.dm-card svg { color: var(--mint); }
+.dm-card h2 { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; }
+.dm-card p { color: rgba(255, 255, 255, .8); line-height: 1.5; flex: 1; }
+.dm-card-juego { background: linear-gradient(160deg, rgba(110, 231, 183, .22), rgba(255, 255, 255, .05)); border-color: rgba(110, 231, 183, .55); }
+.dm-recorrido { margin-top: 34px; scroll-margin-top: 16px; }
+.dm-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.dm-tab { background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .2); color: #fff; border-radius: 999px; padding: 9px 16px; font-weight: 700; font-size: .92rem; }
+.dm-tab.on { background: var(--mint); color: var(--ink); border-color: var(--mint); }
+.dm-visor { margin-top: 14px; border-radius: 20px; overflow: hidden; background: #0a1f17; border: 1px solid rgba(255, 255, 255, .2); box-shadow: 0 24px 60px rgba(0, 0, 0, .45); }
+.dm-img { display: block; width: 100%; height: auto; animation: jg-aparece-suave .35s ease both; }
+.dm-pie { display: grid; gap: 3px; padding: 14px 18px; background: rgba(6, 36, 26, .9); }
+.dm-pie b { font-size: 1.05rem; color: var(--mint); }
+.dm-pie span { color: rgba(255, 255, 255, .85); line-height: 1.45; }
+.dm-fin { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 26px; color: rgba(255, 255, 255, .75); font-size: .95rem; }
+@keyframes jg-aparece-suave { from { opacity: 0; transform: scale(.985); } to { opacity: 1; transform: scale(1); } }
+@media (max-width: 760px) { .dm-cards { grid-template-columns: 1fr; } }
