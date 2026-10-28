@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { Link } from "react-router-dom";
 import { Gamepad2, ArrowRight, Trophy, MousePointerClick } from "lucide-react";
 import logo from "../../assets/avenir-logo.png";
 import "./juego.css";
 import "./demo.css";
+
+const MapaDemo = React.lazy(() => import("./MapaDemo"));
 
 // Página de la demo pública (QR del folleto): el juego + un recorrido interactivo por el sistema con capturas
 // de la demo local (datos ficticios). No usa el backend, así que anda sin cuenta y sin Internet lenta.
@@ -57,6 +59,8 @@ const DemoPublica: React.FC = () => {
                         <div className="dm-pie"><b>{m.titulo}</b><span>{m.texto}</span></div>
                     </div>
                 </section>
+
+                <Suspense fallback={<div className="dm-mapa" style={{ minHeight: 120 }}>Cargando el mapa…</div>}><MapaDemo /></Suspense>
 
                 <footer className="dm-fin">
                     <Link to="/juego/ranking" className="dm-link"><Trophy size={16} /> Ver el ranking en vivo</Link>
