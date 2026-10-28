@@ -188,9 +188,9 @@ const JuegoInspector: React.FC = () => {
         const p = evaluando;
         const pts = calcularPuntosHallazgo(p, nivel);
         const dif = Math.abs(ordenDeNivel(p.nivel) - ordenDeNivel(nivel));
-        if (dif === 0) { sonidoAcierto(); setFeedback({ clase: "exacto", titulo: "¡Exacto!", texto: `Es un riesgo ${etiquetaDeNivel(p.nivel).toLowerCase()}. ${p.descripcion}`, puntos: pts }); }
-        else if (dif === 1) { sonidoRegular(); setFeedback({ clase: "cerca", titulo: "Casi", texto: `Lo clasificaste ${etiquetaDeNivel(nivel).toLowerCase()} y es ${etiquetaDeNivel(p.nivel).toLowerCase()}. ${p.descripcion}`, puntos: pts }); }
-        else { sonidoError(); setFeedback({ clase: "lejos", titulo: "Lo encontraste, pero lo subestimaste", texto: `Lo clasificaste ${etiquetaDeNivel(nivel).toLowerCase()} y es ${etiquetaDeNivel(p.nivel).toLowerCase()}. ${p.descripcion}`, puntos: pts }); }
+        if (dif === 0) { sonidoAcierto(); setFeedback({ clase: "exacto", titulo: "¡Exacto!", texto: `Nivel de riesgo: ${etiquetaDeNivel(p.nivel)}. ${p.descripcion}`, puntos: pts }); }
+        else if (dif === 1) { sonidoRegular(); setFeedback({ clase: "cerca", titulo: "Casi", texto: `Lo clasificaste como ${etiquetaDeNivel(nivel)} y es ${etiquetaDeNivel(p.nivel)}. ${p.descripcion}`, puntos: pts }); }
+        else { sonidoError(); setFeedback({ clase: "lejos", titulo: "Lo encontraste, pero lo subestimaste", texto: `Lo clasificaste como ${etiquetaDeNivel(nivel)} y es ${etiquetaDeNivel(p.nivel)}. ${p.descripcion}`, puntos: pts }); }
         setEncontrados((e) => ({ ...e, [p.id]: nivel }));
         setPuntosBase((b) => b + pts);
     };
