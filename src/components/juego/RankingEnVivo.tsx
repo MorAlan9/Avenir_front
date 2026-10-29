@@ -80,7 +80,7 @@ const RankingEnVivo: React.FC = () => {
                         ))}
                     </div>
                     <div className="jg-vivo">
-                        <h3><i className="jg-punto" /> En vivo · {enLinea} {enLinea === 1 ? "persona" : "personas"} ahora</h3>
+                        <h2><i className="jg-punto" /> En vivo · {enLinea} {enLinea === 1 ? "persona" : "personas"} ahora</h2>
                         {feed.length === 0 ? <p className="jg-vivo-vacio">Esperando actividad… escaneá el QR y probá un módulo.</p> : (
                             <ul>{feed.map((e) => <li key={e.id}><b>{e.nombre}</b> {frase(e)}</li>)}</ul>
                         )}

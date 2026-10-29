@@ -257,7 +257,7 @@ const JuegoInspector: React.FC = () => {
                     <div className="jg-lateral">
                         <div className="jg-vista-escena"><Escena encontrados={{}} pista={null} mostrarFaltantes={false} interactivo={false} onPeligro={() => {}} onSeguro={() => {}} onVacio={() => {}} /></div>
                         <div className="jg-top3">
-                            <h3>Mejores inspectores</h3>
+                            <h2>Mejores inspectores</h2>
                             {top.length === 0 && <div className="jg-vacio">Todavía nadie jugó. ¡Sé el primero!</div>}
                             {top.slice(0, 3).map((r, i) => (
                                 <div className="jg-fila" key={r.id}><span className="pos">{i + 1}</span><span>{r.nombre}{r.empresa ? ` · ${r.empresa}` : ""}</span><span className="pts">{r.puntos}</span></div>

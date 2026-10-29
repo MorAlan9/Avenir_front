@@ -1,0 +1,208 @@
+/* =====================================================================
+   Avenir · Capa de maquetación común y accesibilidad
+   - .av-pagina: todas las pantallas internas comparten ancho, margen y ritmo.
+   - Foco visible, objetivos táctiles de 44 px, movimiento reducido, contraste AA.
+   - Opciones del usuario (panel "Accesibilidad"): texto grande, alto contraste,
+     fuente legible, espaciado, sin animaciones, foco reforzado.
+   ===================================================================== */
+
+:root {
+    --av-zoom: 1;
+    --av-ancho: 1180px;
+    --av-gutter: 28px;
+    --av-radio: 14px;
+    --av-foco: #FFD400;
+    --av-foco-borde: #0B3B2A;
+}
+
+/* ---------- Enlace "Saltar al contenido" (primer Tab de la página) ---------- */
+.av-saltar {
+    position: fixed; left: 12px; top: -60px; z-index: 10000;
+    background: #FFD400; color: #0B3B2A; font-weight: 800; padding: 12px 18px;
+    border-radius: 10px; text-decoration: none; box-shadow: 0 6px 20px rgba(0,0,0,.35);
+    transition: top .15s ease;
+}
+.av-saltar:focus { top: 12px; }
+
+/* Texto solo para lectores de pantalla */
+.av-sr-only {
+    position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- Foco SIEMPRE visible (los estilos en línea lo apagaban) ---------- */
+:where(a, button, input, select, textarea, summary, [role="button"], [tabindex]):focus-visible {
+    outline: 3px solid var(--av-foco) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 5px var(--av-foco-borde) !important;
+    border-radius: 6px;
+}
+main:focus, #contenido-principal:focus { outline: none; }
+
+/* ---------- Contenedor común de las pantallas internas ---------- */
+.av-pagina {
+    width: 100%;
+    max-width: var(--av-ancho);
+    margin: 0 auto;
+    padding: 4px 0 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-sizing: border-box;
+    zoom: var(--av-zoom);
+}
+/* Cada pantalla ocupa SIEMPRE todo el ancho del contenedor (antes cada una tenía su propio maxWidth y se centraba distinto) */
+.av-pagina > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    box-sizing: border-box !important;
+}
+/* El mapa y las vistas a pantalla completa no se encuadran */
+.av-pagina.av-pagina-ancha { max-width: none; padding: 0; }
+
+/* Tarjetas: mismo radio, borde y sombra suave en todas las pantallas */
+.av-pagina > div:not([class*="map"]) {
+    border-radius: var(--av-radio);
+}
+
+/* Margen derecho reservado para los botones flotantes (ayuda/reportar): nada queda tapado */
+main#contenido-principal { padding-right: 84px !important; padding-left: var(--av-gutter) !important; }
+@media (max-width: 900px) {
+    main#contenido-principal { padding-left: 14px !important; padding-right: 14px !important; padding-bottom: 150px !important; }
+    .av-pagina { gap: 16px; }
+}
+
+/* Marco común: toda pantalla es una tarjeta con el mismo fondo, borde, sombra y radio */
+.av-pagina:not(.av-pagina-ancha) > * {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: var(--av-radio);
+    box-shadow: 0 2px 10px rgba(15, 23, 42, .07);
+    overflow-x: auto !important;   /* si algo no entra (tablas), se desplaza dentro de la tarjeta y no se corta */
+}
+body.dark-mode .av-pagina:not(.av-pagina-ancha) > * { background-color: #111A33; border-color: #1E293B; }
+/* Títulos de formularios en grilla: ocupan una fila entera (antes quedaban gigantes en una celda) */
+.form-crud > :is(h2, h3), .form-empresa > :is(h2, h3) { grid-column: 1 / -1; margin: 0 0 4px; font-size: 1.15rem; line-height: 1.3; }
+@media (min-width: 481px) {
+    .tabla-usuarios-simetrica { table-layout: auto !important; min-width: 780px; }
+}
+/* Columnas de estado/rol: no se parten letra por letra */
+.av-pagina :is(td[data-label="Rol"], td[data-label="Estado"], td[data-label="Acciones"]) { white-space: nowrap; }
+.av-pagina td, .av-pagina th { overflow-wrap: normal; word-break: normal; }
+
+/* Tablas: nunca se salen del marco; si no entran, scroll dentro de la tarjeta */
+.av-pagina table { max-width: 100%; }
+.av-pagina :is(.table-responsive, .tabla-contenedor, [class*="tabla"]) { max-width: 100%; overflow-x: auto; }
+
+/* ---------- Objetivos táctiles (WCAG 2.5.5/2.5.8) y letra legible en el celular ---------- */
+@media (pointer: coarse) {
+    :where(.av-pagina, aside, nav) :where(button, select, input:not([type="checkbox"]):not([type="radio"]), [role="button"]) { min-height: 44px; }
+    :where(.av-pagina, aside, nav) :where(input[type="checkbox"], input[type="radio"]) { width: 22px; height: 22px; }
+}
+@media (max-width: 768px) {
+    :where(.av-pagina) :where(input, select, textarea) { font-size: 16px !important; } /* evita el zoom automático de iOS */
+}
+
+/* ---------- Movimiento reducido (preferencia del sistema o del panel) ---------- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}
+html.av-sin-anim *, html.av-sin-anim *::before, html.av-sin-anim *::after {
+    animation: none !important; transition: none !important; scroll-behavior: auto !important;
+}
+
+/* ---------- Contraste AA (≥ 4,5:1) en colores que venían en línea o en las hojas viejas ---------- */
+/* Etiquetas de categoría del menú lateral (gris sobre verde oscuro) */
+aside [style*="rgb(148, 163, 184)"], aside [style*="#94A3B8"] { color: #E2E8F0 !important; }
+/* Textos grises claros sobre fondos claros */
+body:not(.dark-mode) main :is([style*="; color: rgb(148, 163, 184)"], [style^="color: rgb(148, 163, 184)"]) { color: #475569 !important; }
+body:not(.dark-mode) main :is([style*="; color: rgb(16, 185, 129)"], [style^="color: rgb(16, 185, 129)"]) { color: #047857 !important; }
+body:not(.dark-mode) main :is([style*="; color: rgb(5, 150, 105)"], [style^="color: rgb(5, 150, 105)"]) { color: #047857 !important; }
+body:not(.dark-mode) main :is([style*="; color: rgb(245, 158, 11)"], [style^="color: rgb(245, 158, 11)"]) { color: #92400E !important; }
+body:not(.dark-mode) main :is([style*="; color: rgb(59, 130, 246)"], [style^="color: rgb(59, 130, 246)"]) { color: #1D4ED8 !important; }
+body:not(.dark-mode) main :is([style*="; color: rgb(37, 99, 235)"], [style^="color: rgb(37, 99, 235)"]) { color: #1D4ED8 !important; }
+body:not(.dark-mode) main :is([style*="; color: rgb(2, 132, 199)"], [style^="color: rgb(2, 132, 199)"]) { color: #075985 !important; }
+body:not(.dark-mode) main :is([style*="; color: rgb(100, 116, 139)"], [style^="color: rgb(100, 116, 139)"]) { color: #475569 !important; }
+/* Botones con texto blanco: fondos un tono más oscuros */
+[style*="background-color: rgb(5, 150, 105)"] { background-color: #047857 !important; }
+[style*="background-color: rgb(16, 185, 129)"] { background-color: #047857 !important; }
+[style*="background-color: rgb(59, 130, 246)"] { background-color: #2563EB !important; }
+[style*="background-color: rgb(239, 68, 68)"] { background-color: #DC2626 !important; }
+.btn-guardar, .btn-agregar, .btn-editar, [class*="btn-guardar"], .insumos-tab.activo, .perfil-btn-guardar, .btn-primario, .registrer-button, .login-button, .btn-doc-accion.descargar, .btn-agregar-rol, button[type="submit"].btn-interactive { background-color: #166534 !important; color: #FFFFFF !important; }
+.btn-baja { background-color: #475569 !important; color: #FFFFFF !important; }
+.btn-eliminar { background-color: #DC2626 !important; color: #FFFFFF !important; }
+.perfil-rol-badge { color: #065F46 !important; }
+.cronograma-dia-numero { color: #374151 !important; opacity: 1 !important; }
+.cronograma-dia-otro-mes .cronograma-dia-numero, [class*="fuera"] .cronograma-dia-numero { color: #4B5563 !important; }
+.tile-activos, .tile-vigente { color: #065F46 !important; }
+.cronograma-dia.fuera-de-mes { opacity: 1 !important; }
+.cronograma-dia.fuera-de-mes .cronograma-dia-numero { color: #4B5563 !important; }
+.cronograma-dia.fuera-de-mes { background-color: #F1F5F9 !important; }
+.cronograma-evento-punto { color: #0F172A !important; font-weight: 700; opacity: 1 !important; }
+.cronograma-evento-punto.evento-tipo-AUDITORIA { background-color: #BFD3FF !important; }
+.cronograma-evento-punto.evento-tipo-CAPACITACION { background-color: #A7F0D2 !important; }
+.cronograma-evento-punto.evento-tipo-REUNION { background-color: #DDD0FB !important; }
+.cronograma-evento-punto.evento-tipo-MANTENIMIENTO { background-color: #FCD9A0 !important; }
+.cronograma-evento-punto.evento-tipo-OTRO { background-color: #CBD5E1 !important; }
+/* Botón flotante de reportes (verde WhatsApp con ícono blanco = 1,9:1) */
+button[aria-label="Reportar un problema o sugerencia"] { background: #0E7C5F !important; }
+
+/* =====================================================================
+   OPCIONES DEL USUARIO (panel de accesibilidad)
+   ===================================================================== */
+html.av-contraste { filter: contrast(1.35) saturate(1.1); }
+html.av-contraste :where(input, select, textarea) { border: 2px solid #000 !important; }
+html.av-contraste :where(a) { text-decoration: underline !important; }
+html.av-contraste :where(button) { border: 2px solid currentColor !important; }
+
+html.av-fuente-legible, html.av-fuente-legible * {
+    font-family: Verdana, Tahoma, "Trebuchet MS", "Segoe UI", sans-serif !important;
+    letter-spacing: .035em;
+    word-spacing: .12em;
+}
+html.av-espaciado :where(p, li, td, th, label, span, div) { line-height: 1.75 !important; }
+html.av-espaciado :where(p, li) { margin-bottom: .6em; }
+
+html.av-foco-fuerte :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline-width: 5px !important; box-shadow: 0 0 0 8px #000 !important;
+}
+html.av-foco-fuerte a { text-decoration: underline !important; }
+
+/* ---------- Panel ---------- */
+.av-a11y-btn {
+    position: fixed; right: 24px; bottom: 152px; z-index: 950;
+    width: 52px; height: 52px; border-radius: 50%; border: 3px solid #fff;
+    background: #1D4ED8; color: #fff; display: grid; place-items: center; cursor: pointer;
+    box-shadow: 0 10px 24px -6px rgba(29, 78, 216, .6);
+}
+.av-a11y-btn.av-publico { bottom: 24px; }
+.av-a11y-panel {
+    position: fixed; right: 88px; bottom: 16px; z-index: 960;
+    width: min(380px, calc(100vw - 104px)); max-height: calc(100vh - 32px); overflow-y: auto;
+    background: #fff; color: #0F172A; border: 2px solid #1D4ED8; border-radius: 16px;
+    box-shadow: 0 24px 60px -12px rgba(0, 0, 0, .45); padding: 16px 18px;
+}
+.av-a11y-panel h2 { font-size: 1.05rem; margin: 0 0 4px; color: #0B3B2A; }
+.av-a11y-panel p.av-ayuda { font-size: .82rem; color: #334155; margin: 0 0 12px; }
+.av-a11y-panel fieldset { border: 0; padding: 0; margin: 0 0 14px; }
+.av-a11y-panel legend { font-weight: 800; font-size: .88rem; margin-bottom: 6px; padding: 0; }
+.av-a11y-fila { display: flex; gap: 8px; flex-wrap: wrap; }
+.av-a11y-panel button.av-op, .av-a11y-panel label.av-sw {
+    min-height: 44px; border-radius: 10px; border: 2px solid #94A3B8; background: #F8FAFC; color: #0F172A;
+    font-weight: 700; font-size: .9rem; padding: 8px 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+}
+.av-a11y-panel button.av-op[aria-pressed="true"], .av-a11y-panel button.av-op[aria-checked="true"] { background: #1D4ED8; border-color: #1D4ED8; color: #fff; }
+.av-a11y-panel .av-sw { width: 100%; justify-content: space-between; }
+.av-a11y-panel .av-sw input { width: 22px; height: 22px; accent-color: #1D4ED8; }
+.av-a11y-pie { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.av-a11y-panel button.av-primario { background: #0F6B45; border-color: #0F6B45; color: #fff; }
+.av-a11y-panel button.av-peligro { background: #fff; border-color: #B91C1C; color: #B91C1C; }
+@media (max-width: 520px) {
+    .av-a11y-btn { right: 12px; }
+    .av-a11y-panel { right: 8px; bottom: 76px; width: calc(100vw - 16px); max-height: calc(100vh - 92px); }
+}
+@media print { .av-a11y-btn, .av-a11y-panel, .av-saltar { display: none !important; } }

@@ -80,6 +80,14 @@ interface RolBD {
     permisos?: PermisoBD[];
 }
 
+const TITULOS_VISTA: Record<string, string> = {
+    usuarios: "Usuarios", roles: "Roles", empresas: "Empresas", horarios: "Horarios", asistencia: "Ingreso y egreso",
+    iper: "Parámetros IPER", "iper-form": "Formulario IPER", "iper-historial": "Historial IPER", ats: "Análisis de trabajo seguro (ATS)",
+    "permisos-usuario": "Permisos por empleado", mapa: "Mapa", insumos: "Insumos", viaticos: "Viáticos", tareas: "Asignación de tareas",
+    documentos: "Documentos", cronograma: "Cronograma", "mi-perfil": "Mi perfil", "estado-sistema": "Estado del sistema",
+    ayuda: "Centro de ayuda", presencia: "Usuarios conectados", estadisticas: "Estadísticas", relevamientos: "Relevamientos",
+};
+
 const Home: React.FC = () => {
     const [vistaActiva, setVistaActiva] = useState<"usuarios" | "roles" | "empresas" | "horarios" | "asistencia" | "iper" | "iper-form" | "iper-historial" | "ats" | "permisos-usuario" | "mapa" | "insumos" | "viaticos" | "tareas" | "documentos" | "cronograma" | "mi-perfil" | "estado-sistema" | "ayuda" | "presencia" | "estadisticas" | "relevamientos">("usuarios");
     const [rolesDisponibles, setRolesDisponibles] = useState<RolBD[]>([]);
@@ -126,6 +134,15 @@ const Home: React.FC = () => {
             localStorage.setItem("theme", "light");
         }
     }, [darkMode]);
+
+    // Al elegir una pantalla: en el celular se cierra el menú (antes quedaba tapando todo) y el foco pasa al contenido
+    // (a quien navega con teclado o lector de pantalla se le anuncia la nueva pantalla y no tiene que volver a recorrer el menú).
+    const primeraVista = React.useRef(true);
+    useEffect(() => {
+        if (primeraVista.current) { primeraVista.current = false; return; }
+        if (window.innerWidth <= 768) setSidebarAbierta(false);
+        document.getElementById("contenido-principal")?.focus({ preventScroll: true });
+    }, [vistaActiva]);
 
     const toggleDarkMode = () => {
         setDarkMode((prev) => !prev);
@@ -278,6 +295,7 @@ const Home: React.FC = () => {
 
             {}
             <aside
+                aria-label="Menú de navegación"
                 className={sidebarAbierta ? "sidebar-app sidebar-movil-abierta" : "sidebar-app"}
                 style={{
                 width: sidebarAbierta ? "260px" : "70px",
@@ -311,6 +329,8 @@ const Home: React.FC = () => {
                     )}
                     <button
                         onClick={() => setSidebarAbierta(!sidebarAbierta)}
+                        aria-label={sidebarAbierta ? "Cerrar el menú lateral" : "Abrir el menú lateral"}
+                        aria-expanded={sidebarAbierta}
                         style={{ backgroundColor: "transparent", border: "none", color: "#FFF", cursor: "pointer", padding: "4px" }}
                         className="btn-interactive"
                     >
@@ -474,7 +494,7 @@ const Home: React.FC = () => {
             <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
 
                 {}
-                <nav style={{
+                <nav aria-label="Información de la sesión" style={{
                     backgroundColor: darkMode ? "#0B132B" : "#064E3B",
                     borderBottom: darkMode ? "1px solid #10B981" : "none",
                     padding: "12px 20px",
@@ -489,6 +509,7 @@ const Home: React.FC = () => {
                     <div style={{ display: "flex", alignItems: "center", gap: "15px", flexWrap: "wrap" }}>
                         <button
                             onClick={() => setSidebarAbierta(true)}
+                            aria-label="Abrir el menú lateral"
                             className="btn-menu-movil"
                             style={{ backgroundColor: "transparent", border: "none", color: "#FFF", cursor: "pointer", padding: "4px" }}
                         >
@@ -582,7 +603,10 @@ const Home: React.FC = () => {
                 </nav>
 
                 {}
-                <main style={{ padding: "20px", paddingBottom: "110px", flex: 1, minWidth: 0 }}>
+                <main id="contenido-principal" tabIndex={-1} aria-label="Contenido principal" style={{ padding: "20px", paddingBottom: "110px", flex: 1, minWidth: 0 }}>
+                    {/* Encabezado principal para lectores de pantalla: anuncia la pantalla al cambiar de módulo */}
+                    <h1 className="av-sr-only" aria-live="polite">{TITULOS_VISTA[vistaActiva] ?? "Avenir"}</h1>
+                    <div className={vistaActiva === "mapa" ? "av-pagina av-pagina-ancha" : "av-pagina"}>
                     {vistaActiva === "usuarios" && <GestorUsuarios onIrAlMapa={handleIrAlMapaConZoom} />}
                     {vistaActiva === "permisos-usuario" && <GestorPermisosUsuarios darkMode={darkMode} />}
                     {vistaActiva === "roles" && <GestorRoles />}
@@ -605,6 +629,7 @@ const Home: React.FC = () => {
                     {vistaActiva === "mi-perfil" && <MiPerfilComponent />}
                     {vistaActiva === "estado-sistema" && <EstadoSistemaComponent />}
                     {vistaActiva === "presencia" && <PanelPresenciaComponent darkMode={darkMode} />}
+                    </div>
                 </main>
             </div>
 

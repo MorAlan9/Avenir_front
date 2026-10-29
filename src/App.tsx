@@ -1,9 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 import LoginComponent from "./components/login/login";
 import Register from "./components/registrer/registrer";
 import Home from "./components/home/home";
+import PanelAccesibilidad from "./components/accesibilidad/PanelAccesibilidad";
 
 import EmpresaComponent from "./components/empresa/EmpresaComponent";
 import RegistroHorarioComponent from "./components/Horarios/RegistroHorariosComponents";
@@ -25,9 +26,19 @@ const cargandoJuego = <div style={{ minHeight: "100vh", background: "#06241A" }}
 const Privada: React.FC<{ children: React.ReactElement }> = ({ children }) =>
   localStorage.getItem("token") ? children : <Navigate to="/login" replace />;
 
+// Zona de contenido principal para las pantallas públicas y las sueltas (el panel /home define su propio <main>).
+// display: contents → no cambia el diseño; solo le da al lector de pantalla el "contenido principal" y un destino al enlace "Saltar al contenido".
+const Principal: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { pathname } = useLocation();
+  if (pathname === "/home") return <>{children}</>;
+  return <main id="contenido-principal" tabIndex={-1} style={{ display: "contents" }}>{children}</main>;
+};
+
 const App: React.FC = () => {
   return (
     <Router>
+      <nav aria-label="Atajos de teclado"><a className="av-saltar" href="#contenido-principal">Saltar al contenido</a></nav>
+      <Principal>
       <Routes>
         {}
         <Route path="/" element={<React.Suspense fallback={<div style={{ minHeight: "100vh", background: "#06241A" }} />}><LandingPageComponent /></React.Suspense>} />
@@ -58,6 +69,8 @@ const App: React.FC = () => {
 
         <Route path="*" element={<h1>404 - Página no encontrada</h1>} />
       </Routes>
+      </Principal>
+      <PanelAccesibilidad />
     </Router>
   );
 };
