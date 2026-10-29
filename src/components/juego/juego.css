@@ -222,3 +222,18 @@
 @media print { .jg-cert-pagina { background: none; padding: 0; display: block; min-height: 0; } .jg-cert { box-shadow: none; } .jg-cert-aviso { display: none !important; } html, body, #root { background: none !important; } * { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
 .jg-cert-aviso { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); background: #06241A; color: #fff; padding: 10px 18px; border-radius: 999px; font-size: .9rem; display: flex; gap: 12px; align-items: center; }
 .jg-cert-aviso button { background: #6EE7B7; border: 0; border-radius: 999px; padding: 6px 14px; font-weight: 800; color: #06241A; cursor: pointer; }
+
+/* Actividad en vivo (pantalla del ranking) */
+.jg-vivo { margin-top: 2.2vmin; background: rgba(255, 255, 255, .06); border: 1px solid rgba(110, 231, 183, .25); border-radius: 14px; padding: 12px 16px; }
+.jg-vivo h3 { font-size: 1rem; font-weight: 800; display: flex; align-items: center; gap: 8px; margin: 0 0 6px; }
+.jg-punto { width: 10px; height: 10px; border-radius: 50%; background: #34d399; box-shadow: 0 0 0 0 rgba(52, 211, 153, .7); animation: jg-latido 1.6s infinite; }
+@keyframes jg-latido { 70% { box-shadow: 0 0 0 9px rgba(52, 211, 153, 0); } 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); } }
+.jg-vivo ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: .95rem; }
+.jg-vivo li { color: rgba(255, 255, 255, .85); animation: jg-destello 1.6s ease-out; overflow-wrap: anywhere; }
+.jg-vivo li b { color: #6ee7b7; }
+.jg-vivo-vacio { color: rgba(255, 255, 255, .6); font-size: .9rem; margin: 0; }
+.jg-modulos { margin-top: 10px; display: grid; gap: 5px; font-size: .8rem; }
+.jg-modulos > div { display: grid; grid-template-columns: 130px minmax(0, 1fr) 28px; gap: 8px; align-items: center; }
+.jg-modulos > div > div { height: 8px; background: rgba(255, 255, 255, .12); border-radius: 4px; overflow: hidden; }
+.jg-modulos i { display: block; height: 100%; background: #34d399; }
+.jg-modulos em { font-style: normal; text-align: right; color: rgba(255, 255, 255, .7); }

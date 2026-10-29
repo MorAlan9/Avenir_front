@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { LocateFixed, MapPin, ShieldCheck } from "lucide-react";
+import { evento } from "./telemetria";
 
 // Empresas FICTICIAS de la demo (mismas coordenadas que la demo local). La ubicación del visitante se usa solo en su
 // dispositivo para dibujar el mapa y calcular distancias: no se envía ni se guarda en ningún lado.
@@ -46,6 +47,7 @@ const MapaDemo: React.FC = () => {
     const usarUbicacion = () => {
         if (!navigator.geolocation) { setEstado({ fase: "error", texto: "Tu navegador no permite usar la ubicación." }); return; }
         setEstado({ fase: "buscando" });
+        evento("MAPA"); // solo avisa que usó el mapa: la ubicación NO se envía
         navigator.geolocation.getCurrentPosition(
             (p) => setEstado({ fase: "listo", lat: p.coords.latitude, lng: p.coords.longitude, precision: p.coords.accuracy }),
             (e) => setEstado({ fase: "error", texto: e.code === 1 ? "No diste permiso para la ubicación. Podés seguir viendo el mapa." : "No pudimos obtener tu ubicación. Probá de nuevo." }),

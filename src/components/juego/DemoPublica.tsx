@@ -1,9 +1,10 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Gamepad2, ArrowRight, Trophy, MousePointerClick } from "lucide-react";
 import logo from "../../assets/avenir-logo.png";
 import "./juego.css";
 import "./demo.css";
+import { evento, registrarVisita } from "./telemetria";
 
 const MapaDemo = React.lazy(() => import("./MapaDemo"));
 
@@ -21,6 +22,8 @@ const MODULOS = [
 
 const DemoPublica: React.FC = () => {
     const [actual, setActual] = useState(MODULOS[0].id);
+    useEffect(() => { registrarVisita(); }, []); // queda registrada la visita (anónima) de quien entró por el QR
+    const elegir = (id: string) => { setActual(id); evento("MODULO", id); };
     const m = MODULOS.find((x) => x.id === actual)!;
     return (
         <div className="jg-root dm-root">
@@ -51,7 +54,7 @@ const DemoPublica: React.FC = () => {
                 <section id="recorrido" className="dm-recorrido">
                     <div className="dm-tabs" role="tablist">
                         {MODULOS.map((x) => (
-                            <button key={x.id} role="tab" aria-selected={x.id === actual} className={`dm-tab${x.id === actual ? " on" : ""}`} onClick={() => setActual(x.id)}>{x.titulo}</button>
+                            <button key={x.id} role="tab" aria-selected={x.id === actual} className={`dm-tab${x.id === actual ? " on" : ""}`} onClick={() => elegir(x.id)}>{x.titulo}</button>
                         ))}
                     </div>
                     <div className="dm-visor">

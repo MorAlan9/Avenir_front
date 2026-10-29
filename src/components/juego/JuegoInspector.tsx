@@ -9,6 +9,7 @@ import {
     type Nivel, type Peligro, type Resultado,
 } from "./datos";
 import { guardarResultado, leerRanking, ordenar, suscribirRanking } from "./ranking";
+import { evento, registrarVisita } from "./telemetria";
 import {
     estaSilenciado, setSilencio, sonidoAcierto, sonidoCuenta, sonidoError, sonidoFin, sonidoGo, sonidoHallazgo, sonidoRegular, sonidoTic,
 } from "./sonidos";
@@ -72,6 +73,8 @@ const JuegoInspector: React.FC = () => {
         setBloqueado(false);
         setResultado(null);
         setCuenta(3);
+        registrarVisita(nombre.trim(), empresa.trim());
+        evento("JUEGO_INICIO", "", nombre.trim());
         setFase("cuenta");
         sonidoCuenta();
     };
@@ -101,6 +104,7 @@ const JuegoInspector: React.FC = () => {
             segundosRestantes: Math.round(quedan), fecha: new Date().toISOString(),
         };
         guardarResultado(r);
+        evento("JUEGO_FIN", `${puntos} pts`, nombre.trim());
         setDesglose({ bonoTiempo, bonoLimpio });
         setResultado(r);
         setPista(null);
@@ -168,6 +172,7 @@ const JuegoInspector: React.FC = () => {
         if (fase !== "juego" || evaluando || bloqueado) return;
         const s = SEGUROS.find((x) => x.id === id);
         sonidoError();
+        evento("FALSA_ALARMA");
         setFalsas((f) => f + 1);
         setBloqueado(true);
         setSacudir(true);
@@ -191,6 +196,7 @@ const JuegoInspector: React.FC = () => {
         if (dif === 0) { sonidoAcierto(); setFeedback({ clase: "exacto", titulo: "¡Exacto!", texto: `Nivel de riesgo: ${etiquetaDeNivel(p.nivel)}. ${p.descripcion}`, puntos: pts }); }
         else if (dif === 1) { sonidoRegular(); setFeedback({ clase: "cerca", titulo: "Casi", texto: `Lo clasificaste como ${etiquetaDeNivel(nivel)} y es ${etiquetaDeNivel(p.nivel)}. ${p.descripcion}`, puntos: pts }); }
         else { sonidoError(); setFeedback({ clase: "lejos", titulo: "Lo encontraste, pero lo subestimaste", texto: `Lo clasificaste como ${etiquetaDeNivel(nivel)} y es ${etiquetaDeNivel(p.nivel)}. ${p.descripcion}`, puntos: pts }); }
+        evento("HALLAZGO", `${p.titulo} (${etiquetaDeNivel(p.nivel)})`);
         setEncontrados((e) => ({ ...e, [p.id]: nivel }));
         setPuntosBase((b) => b + pts);
     };
@@ -207,6 +213,7 @@ const JuegoInspector: React.FC = () => {
         const faltantes = PELIGROS.filter((p) => !encontrados[p.id]).sort((a, b) => ordenDeNivel(b.nivel) - ordenDeNivel(a.nivel));
         if (!faltantes.length) return;
         setPistasUsadas((n) => n + 1);
+        evento("PISTA");
         setPista(faltantes[0].id);
         mostrarToast(`Pista: ${faltantes[0].pista} (−${COSTO_PISTA} pts)`);
     };
