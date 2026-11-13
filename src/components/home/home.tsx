@@ -33,7 +33,9 @@ import {
   Radio,
   Sparkles,
   BarChart3,
-  Camera
+  Camera,
+  AlertTriangle,
+  CalendarClock
 } from "lucide-react";
 import api from "../../service/api";
 import { obtenerPendientes, limpiarSesionConservandoPendientes } from "../../service/offlineQueue";
@@ -64,6 +66,8 @@ import GestionDocumentosComponent from "../documentos/GestionDocumentosComponent
 import HistorialIperComponent from "../iper/HistorialIperComponent";
 import EstadisticasComponent from "../estadisticas/EstadisticasComponent";
 import RelevamientosComponent from "../relevamientos/RelevamientosComponent";
+import IncidentesComponent from "../incidentes/IncidentesComponent";
+import VencimientosComponent from "../vencimientos/VencimientosComponent";
 import CronogramaComponent from "../cronograma/CronogramaComponent";
 import MiPerfilComponent from "../estado/MiPerfilComponent";
 import EstadoSistemaComponent from "../estado/EstadoSistemaComponent";
@@ -89,7 +93,7 @@ const TITULOS_VISTA: Record<string, string> = {
 };
 
 const Home: React.FC = () => {
-    const [vistaActiva, setVistaActiva] = useState<"usuarios" | "roles" | "empresas" | "horarios" | "asistencia" | "iper" | "iper-form" | "iper-historial" | "ats" | "permisos-usuario" | "mapa" | "insumos" | "viaticos" | "tareas" | "documentos" | "cronograma" | "mi-perfil" | "estado-sistema" | "ayuda" | "presencia" | "estadisticas" | "relevamientos">("usuarios");
+    const [vistaActiva, setVistaActiva] = useState<"usuarios" | "roles" | "empresas" | "horarios" | "asistencia" | "iper" | "iper-form" | "iper-historial" | "ats" | "permisos-usuario" | "mapa" | "insumos" | "viaticos" | "tareas" | "documentos" | "cronograma" | "mi-perfil" | "estado-sistema" | "ayuda" | "presencia" | "estadisticas" | "relevamientos" | "incidentes" | "vencimientos">("usuarios");
     const [rolesDisponibles, setRolesDisponibles] = useState<RolBD[]>([]);
     const [rolActivoTesting, setRolActivoTesting] = useState<string>("");
 
@@ -383,6 +387,8 @@ const Home: React.FC = () => {
                                 <button onClick={() => setVistaActiva("insumos")} style={{ backgroundColor: vistaActiva === "insumos" ? "#059669" : "transparent", color: "#FFFFFF", border: "none", padding: "8px 10px", borderRadius: "5px", cursor: "pointer", fontWeight: "bold", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "8px", width: "100%", textAlign: "left" }} className="btn-interactive"><Package size={18} /> {sidebarAbierta && "Insumos"}</button>
                                 <button onClick={() => setVistaActiva("viaticos")} style={{ backgroundColor: vistaActiva === "viaticos" ? "#059669" : "transparent", color: "#FFFFFF", border: "none", padding: "8px 10px", borderRadius: "5px", cursor: "pointer", fontWeight: "bold", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "8px", width: "100%", textAlign: "left" }} className="btn-interactive"><Fuel size={18} /> {sidebarAbierta && "Viáticos (Pago x KM)"}</button>
                                 <button onClick={() => setVistaActiva("relevamientos")} style={{ backgroundColor: vistaActiva === "relevamientos" ? "#059669" : "transparent", color: "#FFFFFF", border: "none", padding: "8px 10px", borderRadius: "5px", cursor: "pointer", fontWeight: "bold", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "8px", width: "100%", textAlign: "left" }} className="btn-interactive"><Camera size={18} /> {sidebarAbierta && "Relevamientos"}</button>
+                                <button onClick={() => setVistaActiva("incidentes")} style={{ backgroundColor: vistaActiva === "incidentes" ? "#059669" : "transparent", color: "#FFFFFF", border: "none", padding: "8px 10px", borderRadius: "5px", cursor: "pointer", fontWeight: "bold", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "8px", width: "100%", textAlign: "left" }} className="btn-interactive"><AlertTriangle size={18} /> {sidebarAbierta && "Accidentes e incidentes"}</button>
+                                <button onClick={() => setVistaActiva("vencimientos")} style={{ backgroundColor: vistaActiva === "vencimientos" ? "#059669" : "transparent", color: "#FFFFFF", border: "none", padding: "8px 10px", borderRadius: "5px", cursor: "pointer", fontWeight: "bold", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "8px", width: "100%", textAlign: "left" }} className="btn-interactive"><CalendarClock size={18} /> {sidebarAbierta && "Vencimientos legales"}</button>
                                 <button onClick={() => setVistaActiva("estadisticas")} style={{ backgroundColor: vistaActiva === "estadisticas" ? "#059669" : "transparent", color: "#FFFFFF", border: "none", padding: "8px 10px", borderRadius: "5px", cursor: "pointer", fontWeight: "bold", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "8px", width: "100%", textAlign: "left" }} className="btn-interactive"><BarChart3 size={18} /> {sidebarAbierta && "Estadísticas"}</button>
                                 <button onClick={() => setVistaActiva("tareas")} style={{ backgroundColor: vistaActiva === "tareas" ? "#059669" : "transparent", color: "#FFFFFF", border: "none", padding: "8px 10px", borderRadius: "5px", cursor: "pointer", fontWeight: "bold", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "8px", width: "100%", textAlign: "left" }} className="btn-interactive"><ListChecks size={18} /> {sidebarAbierta && "Asignación de Tareas"}</button>
                             </div>
@@ -616,6 +622,8 @@ const Home: React.FC = () => {
                     {vistaActiva === "insumos" && <GestionInsumosComponent />}
                     {vistaActiva === "viaticos" && <ViaticosComponent />}
                     {vistaActiva === "relevamientos" && <RelevamientosComponent />}
+                    {vistaActiva === "incidentes" && <IncidentesComponent />}
+                    {vistaActiva === "vencimientos" && <VencimientosComponent />}
                     {vistaActiva === "estadisticas" && <EstadisticasComponent />}
                     {vistaActiva === "tareas" && <AsignacionTareasComponent darkMode={darkMode} />}
                     {vistaActiva === "ayuda" && <CentroAyudaComponent darkMode={darkMode} />}
