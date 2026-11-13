@@ -8,6 +8,7 @@ import type { Empresa } from "../../interfaces/Empresa";
 import type { Relevamiento, TipoRiesgo, Hallazgo, Severidad } from "../../interfaces/Relevamiento";
 import { usePaginacion } from "../common/usePaginacion";
 import { Paginador } from "../common/Paginador";
+import InformeRelevamiento from "./InformeRelevamiento";
 
 const obtenerHeaders = () => {
     const token = localStorage.getItem("token");
@@ -85,6 +86,7 @@ const RelevamientosComponent: React.FC = () => {
     const [subiendoFotoDe, setSubiendoFotoDe] = useState<number | null>(null);
 
     const [conclusion, setConclusion] = useState("");
+    const [verInforme, setVerInforme] = useState(false);
 
     const [errorCrear, setErrorCrear] = useState("");
     const [mensajeCrear, setMensajeCrear] = useState("");
@@ -378,6 +380,7 @@ const RelevamientosComponent: React.FC = () => {
                         </div>
                         <div className="rel-head-acciones">
                             <Badge valor={estadoSel} />
+                            <button className="rel-btn azul chico" onClick={() => setVerInforme(true)}><FileText size={13} /> Informe</button>
                             <button className="rel-cerrar-x" onClick={() => setSeleccionado(null)} aria-label="Cerrar detalle"><X size={16} /></button>
                         </div>
                     </div>
@@ -606,6 +609,8 @@ const RelevamientosComponent: React.FC = () => {
                     </section>
                 </div>
             )}
+
+            {verInforme && seleccionado && <InformeRelevamiento relevamiento={seleccionado} onCerrar={() => setVerInforme(false)} />}
         </div>
     );
 };

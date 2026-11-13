@@ -7,3 +7,9 @@ export const textoError = (err: any, porDefecto: string): string => {
 };
 
 export const hoyISO = (): string => new Date().toISOString().split("T")[0];
+
+/** Cabecera Authorization con el token de la sesion, lista para pasarle a axios. */
+export const cabeceras = () => {
+    const token = localStorage.getItem("token");
+    return token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+};
