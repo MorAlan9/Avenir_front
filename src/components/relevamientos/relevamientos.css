@@ -1,0 +1,532 @@
+/* Pantalla de Relevamientos. Todo con prefijo rel- para no depender de estilos de otros módulos. */
+
+.rel-detalle {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 22px;
+    min-width: 0;
+}
+
+.rel-detalle * {
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+/* ---------- Encabezado ---------- */
+.rel-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.rel-titulo {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #064e3b;
+    overflow-wrap: anywhere;
+}
+
+.rel-subtitulo {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.rel-head-acciones {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rel-cerrar-x {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    color: #334155;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.rel-cerrar-x:hover {
+    background: #e2e8f0;
+}
+
+/* ---------- Pasos del ciclo ---------- */
+.rel-pasos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.rel-paso {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.rel-paso .rel-paso-n {
+    width: 22px;
+    height: 22px;
+    flex: 0 0 22px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #64748b;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+}
+
+.rel-paso.hecho {
+    color: #047857;
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+}
+
+.rel-paso.hecho .rel-paso-n {
+    background: #10b981;
+    color: #fff;
+}
+
+.rel-paso.actual {
+    color: #fff;
+    background: #059669;
+    border-color: #059669;
+}
+
+.rel-paso.actual .rel-paso-n {
+    background: #fff;
+    color: #059669;
+}
+
+/* ---------- Resumen ---------- */
+.rel-resumen {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));
+    gap: 10px;
+}
+
+.rel-dato {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 10px 10px;
+    background: #fff;
+}
+
+.rel-dato b {
+    display: block;
+    font-size: 1.35rem;
+    line-height: 1.1;
+    color: #0f172a;
+}
+
+.rel-dato span {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.rel-dato.alerta b {
+    color: #dc2626;
+}
+
+/* ---------- Secciones ---------- */
+.rel-seccion {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 14px;
+    text-align: left;
+}
+
+.rel-seccion-titulo {
+    width: 100%;
+    text-align: left;
+    margin: 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #ecfdf5;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #064e3b;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.rel-bloque {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+    padding: 16px;
+}
+
+/* ---------- Formularios ---------- */
+.rel-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px 16px;
+    align-items: start;
+}
+
+.rel-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.rel-campo.ancho {
+    grid-column: 1 / -1;
+}
+
+.rel-campo label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.rel-campo .rel-ayuda {
+    font-size: 0.72rem;
+    color: #64748b;
+}
+
+.rel-campo textarea.form-input {
+    min-height: 74px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.rel-form-pie {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* ---------- Botones ---------- */
+.rel-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    background: #22c55e;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.rel-btn:hover:not(:disabled) {
+    background: #16a34a;
+}
+
+.rel-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.rel-btn.azul { background: #2563eb; }
+.rel-btn.azul:hover:not(:disabled) { background: #1d4ed8; }
+.rel-btn.ambar { background: #d97706; }
+.rel-btn.ambar:hover:not(:disabled) { background: #b45309; }
+.rel-btn.rojo { background: #dc2626; }
+.rel-btn.rojo:hover:not(:disabled) { background: #b91c1c; }
+.rel-btn.gris { background: #64748b; }
+.rel-btn.gris:hover:not(:disabled) { background: #475569; }
+.rel-btn.chico { padding: 6px 12px; font-size: 0.78rem; }
+
+/* ---------- Tarjetas de hallazgo ---------- */
+.rel-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
+    gap: 14px;
+}
+
+.rel-hallazgo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #e2e8f0;
+    border-left-width: 5px;
+    border-radius: 10px;
+    background: #fff;
+    padding: 14px;
+}
+
+.rel-hallazgo.sev-BAJO { border-left-color: #22c55e; }
+.rel-hallazgo.sev-MEDIO { border-left-color: #eab308; }
+.rel-hallazgo.sev-ALTO { border-left-color: #f97316; }
+.rel-hallazgo.sev-CRITICO { border-left-color: #dc2626; }
+
+.rel-hallazgo-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.rel-hallazgo p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #0f172a;
+    overflow-wrap: anywhere;
+}
+
+.rel-hallazgo .rel-reco {
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 0.82rem;
+    color: #334155;
+}
+
+.rel-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    font-size: 0.78rem;
+    color: #64748b;
+}
+
+.rel-meta b {
+    color: #334155;
+}
+
+.rel-meta .vencido {
+    color: #dc2626;
+    font-weight: 800;
+}
+
+.rel-hallazgo-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+}
+
+/* ---------- Badges ---------- */
+.rel-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    white-space: nowrap;
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.rel-badge.BAJO { background: #dcfce7; color: #15803d; }
+.rel-badge.MEDIO { background: #fef9c3; color: #a16207; }
+.rel-badge.ALTO { background: #ffedd5; color: #c2410c; }
+.rel-badge.CRITICO { background: #fee2e2; color: #b91c1c; }
+
+.rel-badge.BORRADOR, .rel-badge.ENCONTRADO { background: #e2e8f0; color: #475569; }
+.rel-badge.EN_CURSO, .rel-badge.EN_CORRECCION { background: #dbeafe; color: #1d4ed8; }
+.rel-badge.CERRADO, .rel-badge.RESUELTO { background: #dcfce7; color: #15803d; }
+
+/* ---------- Archivos y fotos ---------- */
+.rel-subida {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.rel-subida input[type="file"] {
+    flex: 1 1 260px;
+    max-width: 100%;
+}
+
+.rel-archivos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.rel-archivo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+    padding: 10px;
+}
+
+.rel-archivo a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #059669;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.rel-archivo img,
+.rel-foto img {
+    width: 100%;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+    display: block;
+}
+
+.rel-fotos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.rel-foto {
+    width: 76px;
+    position: relative;
+}
+
+.rel-foto img {
+    height: 60px;
+}
+
+.rel-foto .rel-foto-x {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: none;
+    background: #dc2626;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+}
+
+.rel-vacio {
+    margin: 0;
+    padding: 18px;
+    text-align: center;
+    font-style: italic;
+    color: #64748b;
+    border: 1px dashed #cbd5e1;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+/* ---------- Cierre ---------- */
+.rel-cierre {
+    align-items: stretch;
+    border: 1px solid #a7f3d0;
+    background: #ecfdf5;
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.rel-cierre.cerrado {
+    border-color: #cbd5e1;
+    background: #f1f5f9;
+}
+
+.rel-cierre p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #0f172a;
+    overflow-wrap: anywhere;
+}
+
+.rel-aviso {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.rel-aviso.error { background: #fee2e2; color: #b91c1c; }
+.rel-aviso.exito { background: #dcfce7; color: #15803d; }
+.rel-aviso.info { background: #dbeafe; color: #1d4ed8; }
+
+/* ---------- Lista principal ---------- */
+.rel-estado-celda {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.rel-acciones-tabla {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+    .rel-pasos {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .rel-paso {
+        flex-direction: column;
+        gap: 4px;
+        padding: 8px 4px;
+        font-size: 0.72rem;
+    }
+    .rel-resumen {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .rel-dato {
+        padding: 8px 6px;
+    }
+    .rel-dato span {
+        font-size: 0.62rem;
+        letter-spacing: 0;
+    }
+    .rel-bloque {
+        padding: 12px;
+    }
+    .rel-form-pie {
+        justify-content: stretch;
+    }
+    .rel-form-pie .rel-btn,
+    .rel-subida .rel-btn {
+        width: 100%;
+    }
+    .rel-lista {
+        grid-template-columns: 1fr;
+    }
+}

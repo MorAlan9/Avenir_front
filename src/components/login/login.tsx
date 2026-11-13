@@ -80,7 +80,10 @@ const LoginComponent: React.FC = () => {
         } catch (err: any) {
             clearTimeout(avisoServidorDormido);
             console.error("Error en login:", err.response);
-            const msgError = err.response?.data?.mensaje || err.response?.data || "Verifique sus credenciales o estado de cuenta.";
+            const datos = err.response?.data;
+            const msgError = typeof datos === "string" && datos.trim()
+                ? datos
+                : datos?.mensaje || "Verifique sus credenciales o estado de cuenta.";
             setError("Error al iniciar sesión: " + msgError);
         } finally {
             setCargando(false);
