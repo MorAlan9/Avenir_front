@@ -61,8 +61,8 @@ const Register: React.FC = () => {
             });
             clearTimeout(avisoServidorDormido);
 
-            const { token, permisos } = response.data || {};
-            const esClaveAdmin = claveAcceso.trim() === "000010001";
+            const { token, permisos, rol } = response.data || {};
+            const esClaveAdmin = rol === "ADMINISTRADOR";
 
             if (esClaveAdmin) {
                 if (token) {

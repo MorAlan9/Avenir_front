@@ -57,6 +57,27 @@ const GraficoBarras: React.FC<{ datos: PuntoEstadistica[]; color?: string; verti
     );
 };
 
+const COLOR_SEVERIDAD: Record<string, string> = { BAJO: "#22c55e", MEDIO: "#eab308", ALTO: "#f97316", CRITICO: "#dc2626" };
+const ETIQUETA_SEVERIDAD: Record<string, string> = { BAJO: "Bajo", MEDIO: "Medio", ALTO: "Alto", CRITICO: "Crítico" };
+
+const GraficoSeveridad: React.FC<{ datos: PuntoEstadistica[] }> = ({ datos }) => {
+    if (!datos || datos.every((p) => p.valor === 0)) return <SinDatos />;
+    const puntos = datos.map((p) => ({ ...p, nombre: ETIQUETA_SEVERIDAD[p.etiqueta] ?? p.etiqueta }));
+    return (
+        <ResponsiveContainer>
+            <BarChart data={puntos} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <XAxis dataKey="nombre" tick={{ fontSize: 11 }} />
+                <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
+                <Tooltip />
+                <Bar dataKey="valor" name="Hallazgos" radius={[4, 4, 0, 0]}>
+                    {puntos.map((p) => <Cell key={p.etiqueta} fill={COLOR_SEVERIDAD[p.etiqueta] ?? "#64748b"} />)}
+                </Bar>
+            </BarChart>
+        </ResponsiveContainer>
+    );
+};
+
 const GraficoLinea: React.FC<{ datos: PuntoEstadistica[]; color?: string }> = ({ datos, color = "#059669" }) => {
     if (!datos || datos.length === 0) return <SinDatos />;
     return (
@@ -72,13 +93,19 @@ const GraficoLinea: React.FC<{ datos: PuntoEstadistica[]; color?: string }> = ({
     );
 };
 
+const legible = (texto: string) => {
+    const limpio = String(texto).replace(/_/g, " ").toLowerCase().replace("correccion", "corrección");
+    return limpio.charAt(0).toUpperCase() + limpio.slice(1);
+};
+
 const GraficoTorta: React.FC<{ datos: PuntoEstadistica[] }> = ({ datos }) => {
     if (!datos || datos.length === 0) return <SinDatos />;
+    const puntos = datos.map((p) => ({ ...p, etiqueta: legible(p.etiqueta) }));
     return (
         <ResponsiveContainer>
             <PieChart>
-                <Pie data={datos} dataKey="valor" nameKey="etiqueta" cx="50%" cy="50%" outerRadius={85} label={(d: any) => `${d.etiqueta}: ${d.valor}`}>
-                    {datos.map((_, i) => <Cell key={i} fill={COLORES[i % COLORES.length]} />)}
+                <Pie data={puntos} dataKey="valor" nameKey="etiqueta" cx="50%" cy="45%" outerRadius="70%" label={(d: any) => d.valor}>
+                    {puntos.map((_, i) => <Cell key={i} fill={COLORES[i % COLORES.length]} />)}
                 </Pie>
                 <Tooltip />
                 <Legend wrapperStyle={{ fontSize: "0.75rem" }} />
@@ -208,6 +235,7 @@ const EstadisticasComponent: React.FC = () => {
             {pestania === "relevamientos" && (
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "16px" }}>
                     <TarjetaGrafico titulo="Hallazgos: encontrados vs resueltos"><GraficoTorta datos={d?.hallazgosPorEstado} /></TarjetaGrafico>
+                    <TarjetaGrafico titulo="Hallazgos por severidad"><GraficoSeveridad datos={d?.hallazgosPorSeveridad} /></TarjetaGrafico>
                     <TarjetaGrafico titulo="Hallazgos por tipo de riesgo"><GraficoBarras datos={d?.hallazgosPorTipoRiesgo} vertical color="#dc2626" /></TarjetaGrafico>
                     <TarjetaGrafico titulo="Hallazgos encontrados por mes"><GraficoLinea datos={d?.encontradosPorMes} color="#f59e0b" /></TarjetaGrafico>
                     <TarjetaGrafico titulo="Hallazgos resueltos por mes"><GraficoLinea datos={d?.resueltosPorMes} color="#059669" /></TarjetaGrafico>
